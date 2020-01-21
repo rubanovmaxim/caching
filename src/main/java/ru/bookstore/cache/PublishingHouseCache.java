@@ -35,6 +35,22 @@ public class PublishingHouseCache {
         return pHouse;
     }
 
+
+//    @Cacheable(value = "publishingHouseCache", key = "#id")
+//    public PublishingHouse getAllPublishingHouse(Long id) {
+//        System.out.println("In PublishingHouseCache Component..");
+//        PublishingHouse pHouse = null;
+//        try {
+//            Optional<PublishingHouse> pHouseOpt = publishingHouseRepository.findById(id);
+//            if (pHouseOpt.isPresent()) {
+//                pHouse = pHouseOpt.get();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return pHouse;
+//    }
+
     @CacheEvict(value = "publishingHouseCache", key = "#id")
     public void deleteGenre(Long id) {
         System.out.println("In PublishingHouseCache Component..");

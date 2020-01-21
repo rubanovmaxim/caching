@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import ru.bookstore.domain.Genre;
 import ru.bookstore.repositories.GenreRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -19,6 +20,13 @@ public class GenreCache {
     @Autowired
     public GenreCache(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
+    }
+
+
+    @Cacheable(value="genreCache")
+    public List<Genre> getAll(){
+        System.out.println("In GenreCache Component ALLLL ..");
+        return genreRepository.findAll();
     }
 
     @Cacheable(value="genreCache", key="#id")
