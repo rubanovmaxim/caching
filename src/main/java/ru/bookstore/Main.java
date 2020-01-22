@@ -52,7 +52,6 @@ public class Main {
     @GetMapping("/genre/list")
     @ResponseBody
     public ResponseEntity< List<Genre>> getAll() {
-
         System.out.println("RestController ALl LIST..  " + cacheManager.getCacheNames());
         long start = System.currentTimeMillis();
 //        Optional<Genre> oenreOpt = genreRepository.findById(itemId);

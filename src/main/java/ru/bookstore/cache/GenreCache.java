@@ -23,10 +23,11 @@ public class GenreCache {
     }
 
 
-    @Cacheable(value="genreCache")
+    @Cacheable(value="genreCache",condition = "#id > 0")
     public List<Genre> getAll(){
         System.out.println("In GenreCache Component ALLLL ..");
-        return genreRepository.findAll();
+        List<Genre> result = genreRepository.findAll();
+        return result;
     }
 
     @Cacheable(value="genreCache", key="#id")
