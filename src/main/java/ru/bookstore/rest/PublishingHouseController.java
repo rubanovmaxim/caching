@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.bookstore.cache.PublishingHouseCache;
 import ru.bookstore.domain.PublishingHouse;
-import ru.bookstore.repositories.PublishingHouseRepository;
 
 import java.util.List;
 
@@ -26,9 +25,17 @@ public class PublishingHouseController {
     }
 
 
-    @ApiOperation(value = "Получение списка издателей", response = List.class, tags = "getPublishingHouseRepository")
+    @ApiOperation(value = "Получение издательства по id", response = List.class, tags = "getPublishingHouse")
+    @GetMapping("/publishinghouse/{id}")
+    public ResponseEntity<PublishingHouse> getPublishingHouse(@PathVariable(name = "id") long id) {
+        PublishingHouse pHouse = publishingHouseCache.getPublishingHouse(id);
+        return ResponseEntity.ok().body(pHouse);
+    }
+
+
+    @ApiOperation(value = "Получение списка издателей", response = List.class, tags = "getPublishingHouseList")
     @GetMapping("/publishinghouse/list")
-    public ResponseEntity<List<PublishingHouse>> getPublishingHouseRepository() {
+    public ResponseEntity<List<PublishingHouse>> getPublishingHouseList() {
         List<PublishingHouse> result = publishingHouseCache.getAll();
         result.forEach(p -> {
             publishingHouseCache.getPublishingHouse(p.getId());
@@ -42,23 +49,22 @@ public class PublishingHouseController {
     @PostMapping("/publishinghouse/new")
     public ResponseEntity<PublishingHouse> addPublishingHouse(@RequestBody(required = true) PublishingHouse pHouse) {
         pHouse.setId(null);
-        pHouse = publishingHouseCache.updatePublishingHouse(pHouse);
+        pHouse = publishingHouseCache.createPublishingHouse(pHouse);
         return ResponseEntity.ok().body(pHouse);
     }
 
     @ApiOperation(value = "Изменение инвормации о издателе", response = PublishingHouse.class, tags = "updatePublishingHouse")
-    @PutMapping("/publishinghouse/update/{pHouseId}")
-    public ResponseEntity<PublishingHouse> updatePublishingHouse(@PathVariable("pHouseId") long pHouseId,
-                                                                 @RequestBody(required = true) PublishingHouse pHouse) {
-        pHouse.setId(pHouseId);
+    @PostMapping("/publishinghouse/update")
+    public ResponseEntity<PublishingHouse> updatePublishingHouse(@RequestBody(required = true) PublishingHouse pHouse) {
+        pHouse.setId(pHouse.getId());
         pHouse = publishingHouseCache.updatePublishingHouse(pHouse);
         return ResponseEntity.ok().body(pHouse);
     }
 
     @ApiOperation(value = "Удаление издателя из БД", response = PublishingHouse.class, tags = "deletePublishingHouse")
-    @DeleteMapping("/publishinghouse/delete/{pHouseId}")
-    public ResponseEntity deletePublishingHouse(@PathVariable("pHouseId") long pHouseId) {
-        publishingHouseCache.deletePublishingHouse(pHouseId);
+    @DeleteMapping("/publishinghouse/delete/{id}")
+    public ResponseEntity deletePublishingHouse(@PathVariable("id") long id) {
+        publishingHouseCache.deletePublishingHouse(id);
         return ResponseEntity.ok().build();
     }
 }

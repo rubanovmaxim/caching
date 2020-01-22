@@ -29,7 +29,7 @@ public class PublishingHouseCache {
 
     @Cacheable(value = "publishingHouseCache", key = "#id")
     public PublishingHouse getPublishingHouse(Long id) {
-        System.out.println("In PublishingHouseCache Component..");
+        System.out.println("In PublishingHouseCache Get Component..");
         PublishingHouse pHouse = null;
         try {
             Optional<PublishingHouse> pHouseOpt = publishingHouseRepository.findById(id);
@@ -43,33 +43,25 @@ public class PublishingHouseCache {
     }
 
 
-//    @Cacheable(value = "publishingHouseCache", key = "#id")
-//    public PublishingHouse getAllPublishingHouse(Long id) {
-//        System.out.println("In PublishingHouseCache Component..");
-//        PublishingHouse pHouse = null;
-//        try {
-//            Optional<PublishingHouse> pHouseOpt = publishingHouseRepository.findById(id);
-//            if (pHouseOpt.isPresent()) {
-//                pHouse = pHouseOpt.get();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return pHouse;
-//    }
-
     @CacheEvict(value = "publishingHouseCache", key = "#id")
     public void deletePublishingHouse(Long id) {
-        System.out.println("In PublishingHouseCache Component..");
+        System.out.println("In PublishingHouseCache Delete Component..");
         publishingHouseRepository.deleteById(id);
     }
 
     @CachePut(value = "publishingHouseCache")
-    public PublishingHouse updatePublishingHouse(PublishingHouse pHouse) {
-        System.out.println("In PublishingHouseCache Component..");
+    public PublishingHouse createPublishingHouse(PublishingHouse pHouse) {
+        System.out.println("In PublishingHouseCache Create Component..");
         pHouse = publishingHouseRepository.save(pHouse);
         return pHouse;
     }
 
+
+    @CachePut(value = "publishingHouseCache", key = "#pHouse.id")
+    public PublishingHouse updatePublishingHouse(PublishingHouse pHouse) {
+        System.out.println("In PublishingHouseCache Update Component..");
+        pHouse = publishingHouseRepository.save(pHouse);
+        return pHouse;
+    }
 
 }

@@ -33,36 +33,42 @@ public class Main {
         SpringApplication.run(Main.class, args);
     }
 
-    @GetMapping("/genre/{id}")
-    @ResponseBody
-    public ResponseEntity<Genre> getItem(@PathVariable long id) {
-
-        System.out.println("RestController 1 1..  " + cacheManager.getCacheNames());
-        long start = System.currentTimeMillis();
-//        Optional<Genre> oenreOpt = genreRepository.findById(itemId);
-
-        Genre item = genreCache.getGenre(id);
-        long end = System.currentTimeMillis();
-        System.out.println("Took : " + ((end - start) / 1000 + " sec."));
-        return new ResponseEntity<Genre>(item, HttpStatus.OK);
+    @GetMapping("/")
+    public String home() {
+        return "caching service";
     }
 
 
-    @GetMapping("/genre/list")
-    @ResponseBody
-    public ResponseEntity< List<Genre>> getAll() {
-        System.out.println("RestController ALl LIST..  " + cacheManager.getCacheNames());
-        long start = System.currentTimeMillis();
-//        Optional<Genre> oenreOpt = genreRepository.findById(itemId);
+//    @GetMapping("/genre1/{id}")
+//    @ResponseBody
+//    public ResponseEntity<Genre> getItem(@PathVariable long id) {
+//
+//        System.out.println("RestController 1 1..  " + cacheManager.getCacheNames());
+//        long start = System.currentTimeMillis();
+////        Optional<Genre> oenreOpt = genreRepository.findById(itemId);
+//
+//        Genre item = genreCache.getGenre(id);
+//        long end = System.currentTimeMillis();
+//        System.out.println("Took : " + ((end - start) / 1000 + " sec."));
+//        return new ResponseEntity<Genre>(item, HttpStatus.OK);
+//    }
 
-        List<Genre> result= genreCache.getAll();
-        result.forEach(g->{
-            genreCache.getGenre(g.getId());
-        });
 
-        long end = System.currentTimeMillis();
-        System.out.println("Took : " + ((end - start) / 1000 + " sec."));
-        return new ResponseEntity< List<Genre>>(result, HttpStatus.OK);
-    }
+//    @GetMapping("/genre/list1")
+//    @ResponseBody
+//    public ResponseEntity< List<Genre>> getAll() {
+//        System.out.println("RestController ALl LIST..  " + cacheManager.getCacheNames());
+//        long start = System.currentTimeMillis();
+////        Optional<Genre> oenreOpt = genreRepository.findById(itemId);
+//
+//        List<Genre> result= genreCache.getAll();
+//        result.forEach(g->{
+//            genreCache.getGenre(g.getId());
+//        });
+//
+//        long end = System.currentTimeMillis();
+//        System.out.println("Took : " + ((end - start) / 1000 + " sec."));
+//        return new ResponseEntity< List<Genre>>(result, HttpStatus.OK);
+//    }
 
 }

@@ -22,37 +22,50 @@ public class GenreCache {
         this.genreRepository = genreRepository;
     }
 
-    public List<Genre> getAll(){
+    public List<Genre> getAll() {
         return genreRepository.findAll();
     }
 
-    @Cacheable(value="genreCache", key="#id")
-    public Genre getGenre(Long id){
-        System.out.println("In GenreCache Component..");
+    @Cacheable(value = "genreCache", key = "#id")
+    public Genre getGenre(Long id) {
+        System.out.println("In GenreCache Get Component..");
         Genre genre = null;
-        try{
+        try {
             Optional<Genre> genreOpt = genreRepository.findById(id);
-            if(genreOpt.isPresent()){
+            if (genreOpt.isPresent()) {
                 genre = genreOpt.get();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return genre;
     }
 
-    @CacheEvict(value="genreCache",key = "#id")
-    public void deleteGenre(Long id){
-        System.out.println("In GenreCache Component..");
+
+    @Cacheable(value = "genreCache", key = "#ids")
+    public List<Genre> getGenresByIds(List<Long> ids) {
+        List<Genre> result = genreRepository.findAllById(ids);
+        return result;
+    }
+
+    @CacheEvict(value = "genreCache", key = "#id")
+    public void deleteGenre(Long id) {
+        System.out.println("In GenreCache Delete Component..");
         genreRepository.deleteById(id);
     }
 
-    @CachePut(value="genreCache")
-    public Genre updateGenre(Genre genre){
-        System.out.println("In GenreCache Component..");
+    @CachePut(value = "genreCache")
+    public Genre createGenre(Genre genre) {
+        System.out.println("In GenreCache Create Component..");
         genre = genreRepository.save(genre);
         return genre;
     }
 
+    @CachePut(value = "genreCache", key = "#genre.id")
+    public Genre updateGenre(Genre genre) {
+        System.out.println("In GenreCache Update Component..");
+        genre = genreRepository.save(genre);
+        return genre;
+    }
 
 }
