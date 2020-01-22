@@ -22,12 +22,8 @@ public class GenreCache {
         this.genreRepository = genreRepository;
     }
 
-
-    @Cacheable(value="genreCache",condition = "#id > 0")
     public List<Genre> getAll(){
-        System.out.println("In GenreCache Component ALLLL ..");
-        List<Genre> result = genreRepository.findAll();
-        return result;
+        return genreRepository.findAll();
     }
 
     @Cacheable(value="genreCache", key="#id")
@@ -52,9 +48,10 @@ public class GenreCache {
     }
 
     @CachePut(value="genreCache")
-    public void updateGenre(Genre genre){
+    public Genre updateGenre(Genre genre){
         System.out.println("In GenreCache Component..");
-        genreRepository.save(genre);
+        genre = genreRepository.save(genre);
+        return genre;
     }
 
 

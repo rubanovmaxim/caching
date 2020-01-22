@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import ru.bookstore.domain.PublishingHouse;
 import ru.bookstore.repositories.PublishingHouseRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -19,6 +20,12 @@ public class PublishingHouseCache {
     public PublishingHouseCache(PublishingHouseRepository publishingHouseRepository) {
         this.publishingHouseRepository = publishingHouseRepository;
     }
+
+
+    public List<PublishingHouse> getAll() {
+        return publishingHouseRepository.findAll();
+    }
+
 
     @Cacheable(value = "publishingHouseCache", key = "#id")
     public PublishingHouse getPublishingHouse(Long id) {
@@ -52,15 +59,16 @@ public class PublishingHouseCache {
 //    }
 
     @CacheEvict(value = "publishingHouseCache", key = "#id")
-    public void deleteGenre(Long id) {
+    public void deletePublishingHouse(Long id) {
         System.out.println("In PublishingHouseCache Component..");
         publishingHouseRepository.deleteById(id);
     }
 
     @CachePut(value = "publishingHouseCache")
-    public void updateGenre(PublishingHouse pHouse) {
+    public PublishingHouse updatePublishingHouse(PublishingHouse pHouse) {
         System.out.println("In PublishingHouseCache Component..");
-        publishingHouseRepository.save(pHouse);
+        pHouse = publishingHouseRepository.save(pHouse);
+        return pHouse;
     }
 
 
