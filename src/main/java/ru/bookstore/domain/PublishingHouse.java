@@ -77,7 +77,8 @@ public class PublishingHouse implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, phone);
+        return id.intValue();
+//        return Objects.hash(id, name, address, phone);
     }
 }
 

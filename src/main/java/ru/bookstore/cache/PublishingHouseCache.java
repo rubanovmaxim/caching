@@ -21,7 +21,7 @@ public class PublishingHouseCache {
         this.publishingHouseRepository = publishingHouseRepository;
     }
 
-
+    @Cacheable(value = "publishingHouseCache")
     public List<PublishingHouse> getAll() {
         return publishingHouseRepository.findAll();
     }
