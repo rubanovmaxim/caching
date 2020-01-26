@@ -22,6 +22,7 @@ public class GenreCache {
         this.genreRepository = genreRepository;
     }
 
+    @Cacheable(value = "genreCache", key = "#Genre?.Id")
     public List<Genre> getAll() {
         return genreRepository.findAll();
     }
